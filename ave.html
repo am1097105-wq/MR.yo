@@ -19,10 +19,43 @@
             border: 3px solid #000;
             border-radius: 10px;
         }
+
+       
+        #pauseMenu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            color: white;
+            font-size: 26px;
+        }
+
+        #pauseMenu button {
+            padding: 10px 20px;
+            font-size: 20px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 10px;
+            border: none;
+        }
     </style>
 </head>
 <body>
+
     <canvas id="game" width="350" height="500"></canvas>
+
+    
+    <div id="pauseMenu">
+        <h2>Juego en Pausa</h2>
+        <button id="resumeBtn">Reanudar</button>
+        <button id="restartBtn">Reiniciar</button>
+    </div>
 
     <script>
         const canvas = document.getElementById("game");
@@ -42,6 +75,7 @@
         let frame = 0;
         let score = 0;
         let gameOver = false;
+        let paused = false;
 
         function drawBird() {
             ctx.fillStyle = "yellow";
@@ -52,8 +86,8 @@
             if (frame % 120 === 0) {
                 let gap = 120;
                 let topHeight = Math.floor(Math.random() * 200) + 20;
-                pipes.push({ x: 350, y: 0, width: 50, height: topHeight });
-                pipes.push({ x: 350, y: topHeight + gap, width: 50, height: 500 });
+                pipes.push({ x: 350, y: 0, width: 50, height: topHeight, passed: false });
+                pipes.push({ x: 350, y: topHeight + gap, width: 50, height: 500, passed: false });
             }
         }
 
@@ -110,26 +144,48 @@
         }
 
         function gameLoop() {
-            if (gameOver) {
-                resetGame();
+            if (!paused) {
+                if (gameOver) {
+                    resetGame();
+                }
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                drawBird();
+                drawPipes();
+                drawScore();
+                updateBird();
+                updatePipes();
+                createPipes();
+
+                frame++;
             }
 
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            drawBird();
-            drawPipes();
-            drawScore();
-            updateBird();
-            updatePipes();
-            createPipes();
-
-            frame++;
             requestAnimationFrame(gameLoop);
         }
 
-        window.addEventListener("keydown", () => {
-            bird.velocity = bird.jump;
+        /* ---- CONTROLES ---- */
+        window.addEventListener("keydown", (e) => {
+            if (e.key === "p" || e.key === "P" || e.key === "Escape") {
+                togglePause();
+            } else {
+                if (!paused) bird.velocity = bird.jump;
+            }
         });
+
+        function togglePause() {
+            paused = !paused;
+            document.getElementById("pauseMenu").style.display = paused ? "flex" : "none";
+        }
+
+        document.getElementById("resumeBtn").onclick = () => {
+            togglePause();
+        };
+
+        document.getElementById("restartBtn").onclick = () => {
+            resetGame();
+            togglePause();
+        };
 
         gameLoop();
     </script>
