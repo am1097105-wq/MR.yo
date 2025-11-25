@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Flappy Bird Simple</title>
+    <title>Ave que salta</title>
     <style>
         body {
             background: #70c5ce;
@@ -48,12 +48,10 @@
 </head>
 <body>
 
-    <canvas id="game" width="350" height="500"></canvas>
-
-    
+    <canvas id="game" width="350" height="500"></canvas>    
     <div id="pauseMenu">
         <h2>Juego en Pausa</h2>
-        <button id="resumeBtn">Reanudar</button>
+        <button id="resumeBtn">Continuar</button>
         <button id="restartBtn">Reiniciar</button>
     </div>
 
@@ -78,13 +76,13 @@
         let paused = false;
 
         function drawBird() {
-            ctx.fillStyle = "yellow";
+            ctx.fillStyle = "white";
             ctx.fillRect(bird.x, bird.y, bird.width, bird.height);
         }
 
         function createPipes() {
             if (frame % 120 === 0) {
-                let gap = 120;
+                let gap = 180;
                 let topHeight = Math.floor(Math.random() * 200) + 20;
                 pipes.push({ x: 350, y: 0, width: 50, height: topHeight, passed: false });
                 pipes.push({ x: 350, y: topHeight + gap, width: 50, height: 500, passed: false });
@@ -92,7 +90,7 @@
         }
 
         function drawPipes() {
-            ctx.fillStyle = "green";
+            ctx.fillStyle = "BLACK";
             pipes.forEach(pipe => {
                 ctx.fillRect(pipe.x, pipe.y, pipe.width, pipe.height);
             });
