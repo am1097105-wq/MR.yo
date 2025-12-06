@@ -38,7 +38,7 @@ font-weight: bold;
 
 .banner {
 height: 300px;
-background: linear-gradient(#00000099, #00000066), url("https://wallpaperaccess.com/full/3949050.jpg");
+background-color: crimson;
 background-size: cover;
 background-position: center;
 color: white;
